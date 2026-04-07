@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { getCookies } from "@/helper/cookies";
+import FormEditService from "./form";
 
 export interface editservice {
   success: boolean
@@ -48,6 +49,7 @@ type Pprop = {
     params: Promise<{ id: string }>
 }
 
+export const dynamic = `force-dynamic`
 export default async function Editservice(prop: Pprop) {
     /* grab value id that sent to URL parameter */
     const id = (await prop.params).id
@@ -57,7 +59,7 @@ export default async function Editservice(prop: Pprop) {
             <p>
                 Sorry, service data with ID {id} 
             </p>
-        )
+        );
 
         
     }
@@ -69,11 +71,17 @@ export default async function Editservice(prop: Pprop) {
             </div>
 
             <p className="text-gray-300 text-sm">
-                mengedit service dengan id: {id}
+                Melakukan edit services
             </p>
+        
+        <div className="my-5 flex flex-wrap items-center gap-3">
+           <Link href="/admin/services" className="text-blue-500 hover:underline">
+                Back to Services {selectedservice.data.name}
+           </Link>
+        </div>
+        <FormEditService Proops={selectedservice.data} />
       </>
     )
 
 
 }
-export const dynamic = `force-dynamic`

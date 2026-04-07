@@ -1,13 +1,14 @@
-'use client';
+'use client'
 
 import Link from "next/link"
 import { useState } from "react"
+import { toast , ToastContainer } from "react-toastify";
 export default function Regis() {
 
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [nama, setNama] = useState<string>("");
-    const [noTelp, setNoTelp] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -16,27 +17,31 @@ export default function Regis() {
             const request = {
                 username,
                 password,
-                nama,
-                noTelp
-            };
+                name: nama,
+                phone,
+            }
             //prepare our url
-            const url =`${process.env.NEXT_PUBLIC_KEY_BASE_URL}/admins`;
+            const url = `https://learn.smktelkom-mlg.sch.id/pdam/admins`;
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'App-Key': process.env.NEXT_PUBLIC_KEY_APP_KEY || " ",
+                    'App-KEY': '23342cee5384cf4a3fbbe38ca6a4863d7a5554df',
                 },
                 body: JSON.stringify(request)
             });
-            if(!res.ok){
-                alert("Gagal registrasi");
-            }
             const resdata = await res.json();
+            if(!res.ok){
+                const message = resdata.message
+                toast.error(message,
+                    {containerId: 'toastregis'}
+                )
+                return;
+            }
             const message = resdata.message || 'Registrasi berhasil';
             alert(message);
         } catch (error) {
-            console.log(error,'omagadd');
+            console.log(error);
         }
         
     }
@@ -44,6 +49,7 @@ export default function Regis() {
     return (
         <>
             <div className="w-full h-dvh ">
+                <ToastContainer containerId = {`toastregis`} />
                 <main className="flex flex-col justify-center items-center w-full h-full">
                     <div className="bg-white p-12 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center">
 
@@ -54,7 +60,7 @@ export default function Regis() {
                             <input type="text" placeholder="Username" className="w-full p-2 border text-black" value={username} onChange={(e) => setUsername(e.target.value)} required />
                             <input type="password" className="w-full p-2 border mt-4 text-black" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                             <input type="text" className="w-full p-2 border mt-4 text-black" placeholder="nama" value={nama} onChange={(e) => setNama(e.target.value)} required />
-                            <input type="text" className="w-full p-2 border mt-4 text-black" placeholder="no.Telp" value={noTelp} onChange={(e) => setNoTelp(e.target.value)} required />
+                            <input type="text" className="w-full p-2 border mt-4 text-black" placeholder="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
                              
                              
                             <button className=" bg-blue-600 text-white rounded mt-3 px-4 py-2 w-full hover:bg-blue-800 active:scale-[0.96] transition-all duration-200" type="submit">

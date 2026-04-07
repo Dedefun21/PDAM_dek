@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { getCookies } from "@/helper/cookies";
-import { editservice } from "./page";
+import { edit } from "./page";
 
+type Proops = {
+    Proops : edit
+}
 
-export default function FormEditService(Prp : editservice) {
-    const [name, setName] = useState<string>(Prp.data.name);
-    const [max_usage, setMax_usage] = useState<number>(Prp.data.max_usage);
-    const [min_usage, setMin_usage] = useState<number>(Prp.data.min_usage);
-    const [price, setPrice] = useState<number>(Prp.data.price);
+export default function FormEditService(Prp : Proops) {
+    const [name, setName] = useState<string>(Prp.Proops.name);
+    const [max_usage, setMax_usage] = useState<number>(Prp.Proops.max_usage);
+    const [min_usage, setMin_usage] = useState<number>(Prp.Proops.min_usage);
+    const [price, setPrice] = useState<number>(Prp.Proops.price);
 
     const router = useRouter();
 
@@ -20,7 +23,7 @@ export default function FormEditService(Prp : editservice) {
     async function handleSave(e: FormEvent) {
         try {
             e.preventDefault();
-            const url = `https://learn.smktelkom-mlg.sch.id/pdam/services/${Prp.data.id}`;
+            const url = `https://learn.smktelkom-mlg.sch.id/pdam/services/${Prp.Proops.id}`;
             const request =
             {
                 name,

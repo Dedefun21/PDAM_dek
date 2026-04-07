@@ -67,7 +67,7 @@ export default function FormAddService() {
     }
 
     return (
-        <form onSubmit={handleSave}>
+        <form onSubmit={handleSave}> 
             <ToastContainer containerId={`toastAddService`} />
             <div className="my-2 flex flex-col">
                 <small className="font-semibold text-cyan-600">

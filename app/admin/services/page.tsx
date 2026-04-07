@@ -1,6 +1,8 @@
 import { getCookies } from "@/helper/cookies"
 import CardService from "./card-service"
 import Link from "next/link"
+import Searchcomponent from "@/components/search"
+
 
 
 export interface ServiceRespon {
@@ -20,10 +22,14 @@ export interface Water {
     createdAt: string
     updatedAt: string
 }
-
-async function getServices(): Promise<ServiceRespon> {
+type Pageprop = {
+    searchParams: Promise<{ search?: string}>
+}
+async function getServices(params: { search?: string}): Promise<ServiceRespon> {
+    
     try {
-        const url = `https://learn.smktelkom-mlg.sch.id/pdam/services`;
+        
+        const url = `https://learn.smktelkom-mlg.sch.id/pdam/services?search=${params.search}`;
         const response = await fetch(url,
             {
                 method: 'GET',
@@ -57,8 +63,12 @@ async function getServices(): Promise<ServiceRespon> {
     }
 }
 
-export default async function Servicepage() {
-    const { success, message, data, count } = await getServices()
+
+export default async function Servicepage(props : Pageprop) {
+    const searchparams = await props.searchParams
+    const {search = ""} = searchparams
+    const { success, message, data, count } = await getServices({search})
+    
 
     if (!success) {
         return (
@@ -81,6 +91,10 @@ export default async function Servicepage() {
                     tambah service
                 </button>
             </Link>
+
+            <div className=" m-6 ">
+                <Searchcomponent keyword={search} />    
+                </div>        
             {
                 count == 0 ?
                     <div className="w-full p-5 bg-yellow-100 text-yellow-400 font-semibold">
